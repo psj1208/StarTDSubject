@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8316f1bad93c6f549b2330fb267eae79
+    m_Address: EnemyExample
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f619d551fe3b0ad47bb3e78ce2099b6f
     m_Address: BasicAudioMixer
     m_ReadOnly: 0
