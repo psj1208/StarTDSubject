@@ -64,6 +64,10 @@ public class Enemy : MonoBehaviour
     {
         curHp = Mathf.Clamp(curHp - dam, 0, maxHp);
         Debug.Log($"{gameObject.name}이 공격받음! Dam : {dam}");
+        UIManager.Instance.show<DamageText>((prefab) =>
+        {
+            prefab.SetDamage(dam, transform.position);
+        });
         Death();
     }
 
@@ -73,4 +77,9 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
     }
     #endregion
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.RemoveEnemyInList(this);
+    }
 }

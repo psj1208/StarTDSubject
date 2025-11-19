@@ -7,7 +7,7 @@ public class OneTarget : Unit
 {
     protected override void Attack()
     {
-        if (curTime >= attackTerm && (hits.Length > 0))
+        if (curTime >= attackTerm && (hits.Count > 0))
         {
             curTime = 0;
             hits[0].GetComponent<Enemy>().GetDamage(atk);

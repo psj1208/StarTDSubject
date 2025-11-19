@@ -79,6 +79,22 @@ public class AddressManager : Singleton<AddressManager>
         };
     }
 
+    public void LoadAssetsAsync<T>(string label, Action<List<T>> onLoaded = null) where T : UnityEngine.Object
+    {
+        Addressables.LoadAssetsAsync<T>(label, null).Completed += op =>
+        {
+            if (op.Status == AsyncOperationStatus.Succeeded)
+            {
+                List<T> loadedAssets = new List<T>(op.Result);
+                onLoaded?.Invoke(loadedAssets);
+            }
+            else
+            {
+                Debug.LogError($"[Addressables] 라벨 기반 에셋 로드 실패. Label: {label}");
+            }
+        };
+    }
+
     /// <summary>
     /// 대기용 로드 메서드
     /// </summary>

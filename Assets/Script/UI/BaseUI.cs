@@ -8,6 +8,7 @@ public abstract class BaseUI : MonoBehaviour
 {
     private GraphicRaycaster raycaster;
     EventSystem eventSystem;
+    private bool initialized = false;
 
     protected virtual void Start()
     {
@@ -20,8 +21,14 @@ public abstract class BaseUI : MonoBehaviour
         UIManager.Instance.RemoveUIInList(GetType().Name);
     }
 
-    protected void CheckOuterClickAndDestroy()
+    protected void CheckOuterClickAndDestroy(GameObject obj)
     {
+        if (!initialized)
+        {
+            initialized = true;
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             // 마우스 클릭된 UI 요소 체크
@@ -37,7 +44,7 @@ public abstract class BaseUI : MonoBehaviour
             bool clickedOnPanel = false;
             foreach (var res in results)
             {
-                if (res.gameObject == this.gameObject || res.gameObject.transform.IsChildOf(this.transform))
+                if (res.gameObject == obj || res.gameObject.transform.IsChildOf(obj.transform))
                 {
                     clickedOnPanel = true;
                     break;

@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Tilemap tilemap;
+    [SerializeField] List<Enemy> curEnemyList = new List<Enemy>();
+    [SerializeField] Commander commander;
+
     private List<Vector3> path;
     public List<Vector3> Path { get { return path; } }
 
@@ -31,6 +35,10 @@ public class GameManager : Singleton<GameManager>
 
         startPos = TileUtility.CellToWorld(tilemap, TileUtility.FindTileByType<StartTile>(tilemap));
         endPos = TileUtility.CellToWorld(tilemap, TileUtility.FindTileByType<EndTile>(tilemap));
+        AddressManager.Instance.LoadAssetAsync<GameObject>("Commander", (prefab) =>
+        {
+            commander = Instantiate(prefab, endPos, Quaternion.identity).GetComponent<Commander>();
+        });
     }
 
     public void GameStart(int stage = 0)
@@ -44,10 +52,7 @@ public class GameManager : Singleton<GameManager>
     public void WaveStart()
     {
         if (curWaveCount == waveEndCount)
-        {
-            Debug.Log($"Stage {curStageCount} 의 총 Wave {curWaveCount} 종료!");
             return;
-        }
 
         EnemyData data = curStage.EnemyList[curWaveCount];
 
@@ -55,17 +60,44 @@ public class GameManager : Singleton<GameManager>
         {
             StartCoroutine(SpawnCorutine(prefab, data.EnemyCount));
         });
+    }
+
+    void WaveEnd()
+    {
+        //실제 액션 넣을 곳.
+
+        Debug.Log($"[GameManager] Wave{curWaveCount} 종료!");
         curWaveCount++;
+
+        if (curWaveCount == waveEndCount)
+        {
+            Debug.Log($"Stage {curStageCount} 의 총 Wave {curWaveCount} 종료!");
+            return;
+        }
     }
 
     IEnumerator SpawnCorutine(GameObject prefab, int count = 1)
     {
         for (int a = 0; a < count; a++)
         {
-            Instantiate(prefab, startPos, Quaternion.identity);
+            curEnemyList.Add(Instantiate(prefab, startPos, Quaternion.identity).GetComponent<Enemy>());
             yield return new WaitForSeconds(0.5f);
         }
+
+        while (curEnemyList.Count > 0)
+        {
+            yield return null;
+        }
+
+        WaveEnd();
     }
+
+    public void RemoveEnemyInList(Enemy enemy)
+    {
+        if(curEnemyList.Contains(enemy))
+            curEnemyList.Remove(enemy);
+    }
+
     private void OnDrawGizmos()
     {
         if (path == null || path.Count < 2)

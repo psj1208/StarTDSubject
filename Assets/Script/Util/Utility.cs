@@ -4,6 +4,20 @@ using UnityEditor.Callbacks;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+
+public static class Util
+{
+    public static void SetCollider2DWorldSize(BoxCollider2D col, float tileSize, float radius)
+    {
+        float worldSize = tileSize * (2 * radius + 1);
+        Vector3 lossy = col.transform.lossyScale;
+
+        Vector2 newLocalSize = new Vector2(worldSize / lossy.x - tileSize * 0.5f, worldSize / lossy.y - tileSize * 0.5f);
+
+        col.size = newLocalSize;
+    }
+}
 
 public static class TileUtility
 {
