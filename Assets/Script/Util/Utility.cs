@@ -8,6 +8,12 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public static class Util
 {
+    /// <summary>
+    /// 타일 1칸의 사이즈에 맞춰 해당 콜라이더의 사이즈를 Radius만큼 조절
+    /// </summary>
+    /// <param name="col">콜라이더</param>
+    /// <param name="tileSize">타일 1칸 크기</param>
+    /// <param name="radius">범위</param>
     public static void SetCollider2DWorldSize(BoxCollider2D col, float tileSize, float radius)
     {
         float worldSize = tileSize * (2 * radius + 1);
@@ -16,6 +22,49 @@ public static class Util
         Vector2 newLocalSize = new Vector2(worldSize / lossy.x - tileSize * 0.5f, worldSize / lossy.y - tileSize * 0.5f);
 
         col.size = newLocalSize;
+    }
+
+    /// <summary>
+    /// 월드의 좌표를 캔버스(오버레이) 상의 좌표로 변환
+    /// </summary>
+    /// <param name="world">타겟 좌표</param>
+    /// <param name="canvasRect">계산의 지표가 되어줄 캔버스</param>
+    /// <returns></returns>
+    public static Vector2 WorldToCanvasInOverlay(Vector2 world, RectTransform canvasRect)
+    {
+        Vector2 screen = Camera.main.WorldToScreenPoint(world);
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screen, null, out Vector2 localPos))
+        {
+            return localPos;
+        }
+        return Vector2.zero;
+    }
+
+    /// <summary>
+    /// 월드의 좌표를 캔버스(카메라) 상의 좌표로 변환
+    /// </summary>
+    /// <param name="worldPos"></param>
+    /// <param name="canvasRect"></param>
+    /// <param name="uiCamera"></param>
+    /// <returns></returns>
+    public static Vector2 WorldToCanvasInCameraSpace(Vector3 worldPos, RectTransform canvasRect, Camera uiCamera)
+    {
+        Vector2 screenPos = uiCamera.WorldToScreenPoint(worldPos);
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, uiCamera, out Vector2 localPos))
+        {
+            return localPos;
+        }
+
+        return Vector2.zero;
+    }
+
+    public static Vector2 LocalToCanvasPosition(RectTransform target, RectTransform canvas)
+    {
+        Vector2 anchoredPos = target.anchoredPosition;
+        // 부모 Rect 기준 위치를 Canvas로 변환
+        return (Vector2)canvas.InverseTransformPoint(target.TransformPoint(anchoredPos));
     }
 }
 

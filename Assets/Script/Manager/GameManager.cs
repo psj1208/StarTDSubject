@@ -8,9 +8,12 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : Singleton<GameManager>
 {
+    protected override bool dontDestroy => false;
+
     [SerializeField] private Tilemap tilemap;
     [SerializeField] List<Enemy> curEnemyList = new List<Enemy>();
-    [SerializeField] Commander commander;
+    [SerializeField] Commander commanderUnit;
+    public Commander CommanderUnit {  get { return commanderUnit; } }
 
     private List<Vector3> path;
     public List<Vector3> Path { get { return path; } }
@@ -18,6 +21,8 @@ public class GameManager : Singleton<GameManager>
     private Vector3 startPos;
     private Vector3 endPos;
     WaveData curStage;
+    bool isWaveOnGoing = false;
+    bool isGameEnd = false;
     int curStageCount = 0;
     int curWaveCount = 0;
     int waveEndCount = 0;
@@ -27,6 +32,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        BuildManager.Instance.ControlBuildMode(true);
     }
 
     public void SetPath()
@@ -37,7 +43,7 @@ public class GameManager : Singleton<GameManager>
         endPos = TileUtility.CellToWorld(tilemap, TileUtility.FindTileByType<EndTile>(tilemap));
         AddressManager.Instance.LoadAssetAsync<GameObject>("Commander", (prefab) =>
         {
-            commander = Instantiate(prefab, endPos, Quaternion.identity).GetComponent<Commander>();
+            commanderUnit = Instantiate(prefab, endPos, Quaternion.identity).GetComponent<Commander>();
         });
     }
 
@@ -49,11 +55,23 @@ public class GameManager : Singleton<GameManager>
         waveEndCount = curStage.EnemyList.Count;
     }
 
-    public void WaveStart()
+    public void TryWaveStart()
     {
-        if (curWaveCount == waveEndCount)
+        if (isGameEnd)
             return;
 
+        if (isWaveOnGoing)
+        {
+            Debug.Log("이미 Wave가 진행 중 입니다.");
+            return;
+        }
+
+        UIManager.Instance.show<WaveStartUI>();
+    }
+
+    public void WaveStart()
+    {
+        isWaveOnGoing = true;
         EnemyData data = curStage.EnemyList[curWaveCount];
 
         AddressManager.Instance.LoadAssetAsync<GameObject>(data.EnemyName, (prefab) =>
@@ -62,20 +80,48 @@ public class GameManager : Singleton<GameManager>
         });
     }
 
-    void WaveEnd()
+    //단순히 웨이브 종료를 알림
+    public void WaveEnd()
     {
-        //실제 액션 넣을 곳.
-
         Debug.Log($"[GameManager] Wave{curWaveCount} 종료!");
-        curWaveCount++;
+        WaveEndAction();
+    }
 
-        if (curWaveCount == waveEndCount)
+    //실제 동작(스테이지 ++ 같은)
+    private void WaveEndAction()
+    {
+        isWaveOnGoing = false;
+        //스테이지의 끝에 도달
+        if (curWaveCount >= waveEndCount - 1)
         {
             Debug.Log($"Stage {curStageCount} 의 총 Wave {curWaveCount} 종료!");
-            return;
+            GameEnd(true);
+        }
+        else
+        {
+            curWaveCount++;
+            UIManager.Instance.show<WaveEndUI>();
         }
     }
 
+    public void GameEnd(bool value)
+    {
+        if (isGameEnd)
+            return;
+        //승리
+        if (value)
+        {
+            Debug.Log("게임 승리");
+            isGameEnd = true;
+        }
+        //패배
+        else
+        {
+            Debug.Log("게임 패배");
+            isGameEnd = true;
+        }
+        BuildManager.Instance.ControlBuildMode(false);
+    }
     IEnumerator SpawnCorutine(GameObject prefab, int count = 1)
     {
         for (int a = 0; a < count; a++)

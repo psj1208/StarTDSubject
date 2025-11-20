@@ -8,16 +8,21 @@ public class BuyUnitUI : BaseUI
 {
     [SerializeField] protected TextMeshProUGUI priceText;
     protected float buyPrice;
+    protected float BuyPrice {
+        set { 
+            buyPrice = value;
+            priceText.text = buyPrice.ToString();
+        } 
+    }
     protected PointerObject tileObj;
 
     [SerializeField] Button button;
 
-    public virtual void Init(PointerObject obj, float price = 50)
+    public virtual void Init(PointerObject obj)
     {
         transform.position = obj.transform.position;
         tileObj = obj;
-        buyPrice = price;
-        priceText.text = buyPrice.ToString();
+        BuyPrice = Static.buy_Unit_Price;
     }
 
     protected override void Start()
@@ -34,9 +39,11 @@ public class BuyUnitUI : BaseUI
     protected virtual void OnButtonClicked()
     {
         //여기에는 재화 까는 메서드를 넣으면 될 듯.
-
-        Debug.Log("BuyButton 클릭");
-        BuildManager.Instance.TryFirstBuild(tileObj);
+        if (GameResourceManager.Instance.HaveEnoughCoin(buyPrice))
+        {
+            GameResourceManager.Instance.SpendCoin(buyPrice);
+            BuildManager.Instance.TryFirstBuild(tileObj);
+        }
 
         Destroy(gameObject);
     }

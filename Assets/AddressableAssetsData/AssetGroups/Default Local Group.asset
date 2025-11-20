@@ -33,8 +33,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d29fe22e0911724da982436db4673eb
+    m_Address: WaveEndUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 547dfbdb09070b242bc5bcb5dd5a60d0
+    m_Address: CoinObject
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5e56ec7afe40b034db62cc8947d61be1
     m_Address: UnitUpUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66b498f3a69e53943ba8eca30022dede
+    m_Address: CoinUI
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -64,6 +79,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Level0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0b11ca08dcdae744a536057b80433a8
+    m_Address: WaveStartUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f619d551fe3b0ad47bb3e78ce2099b6f
     m_Address: BasicAudioMixer

@@ -20,7 +20,7 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected float attackTerm = 1f;
     [SerializeField] protected float attackRadius = 1f;
     [SerializeField] protected LayerMask targetLayer;
-    [SerializeField] protected List<Collider2D> hits = new List<Collider2D>();
+    [SerializeField] protected List<Enemy> hits = new List<Enemy>();
     protected abstract void Attack();
 
     protected virtual void Start()
@@ -38,12 +38,12 @@ public abstract class Unit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger Enter: " + collision.name);
         if ((targetLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
-            if (hits.Contains(collision))
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (hits.Contains(enemy))
                 return;
-            hits.Add(collision);
+            hits.Add(enemy);
         }
     }
 
@@ -51,8 +51,9 @@ public abstract class Unit : MonoBehaviour
     {
         if ((targetLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
-            if (hits.Contains(collision))
-                hits.Remove(collision);
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (hits.Contains(enemy))
+                hits.Remove(enemy);
         }
     }
 

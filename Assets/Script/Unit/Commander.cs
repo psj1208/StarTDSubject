@@ -4,5 +4,30 @@ using UnityEngine;
 
 public class Commander : OneTarget
 {
+    [SerializeField] private float hp;
+    [SerializeField] private float maxHp = 100;
 
+    protected override void Start()
+    {
+        base.Start();
+        hp = maxHp;
+    }
+
+    public void GetDamage(int dam)
+    {
+        hp = Mathf.Clamp(hp - dam, 0, maxHp);
+
+        if (IsDeath())
+            DeathAction();
+    }
+
+    private bool IsDeath()
+    {
+        return hp <= 0 ? true : false;
+    }
+    private void DeathAction()
+    {
+        Debug.Log("Commander Die!");
+        GameManager.Instance.GameEnd(false);
+    }
 }

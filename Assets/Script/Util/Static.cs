@@ -39,4 +39,7 @@ public class Static
             new EnemyData("EnemyExample",6)
         })
     };
+
+    public static int buy_Unit_Price = 10;
+    public static int unit_Update_Price = 10;
 }
