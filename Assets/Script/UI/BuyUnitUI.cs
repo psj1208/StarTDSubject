@@ -39,9 +39,9 @@ public class BuyUnitUI : BaseUI
     protected virtual void OnButtonClicked()
     {
         //여기에는 재화 까는 메서드를 넣으면 될 듯.
-        if (GameResourceManager.Instance.HaveEnoughCoin(buyPrice))
+        if (GameResourceManager.Instance.HaveEnoughResource(GameResType.Coin, buyPrice))
         {
-            GameResourceManager.Instance.SpendCoin(buyPrice);
+            GameResourceManager.Instance.SpendResource(GameResType.Coin, buyPrice);
             BuildManager.Instance.TryFirstBuild(tileObj);
         }
 

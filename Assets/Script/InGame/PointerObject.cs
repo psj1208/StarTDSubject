@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PointerObject : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class PointerObject : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (controlUI == null)
         {
             if (unit == null && buildable && BuildManager.Instance.BuildMode)

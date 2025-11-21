@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -317,10 +318,18 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
+    private void OrganizeNullAudio()
+    {
+        var nullSources = activeSources.Where(s => s == null).ToList();
+        foreach (var source in nullSources)
+        {
+            audioPool.Release(source);
+        }
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StopAllSounds();
-        StopBGM();
+        OrganizeNullAudio();
     }
 
     protected override void OnDestroy()

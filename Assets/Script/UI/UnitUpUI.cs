@@ -13,9 +13,9 @@ public class UnitUpUI : BuyUnitUI
 
     protected override void OnButtonClicked()
     {
-        if (GameResourceManager.Instance.HaveEnoughCoin(buyPrice))
+        if (GameResourceManager.Instance.HaveEnoughResource(GameResType.Coin, buyPrice))
         {
-            GameResourceManager.Instance.SpendCoin(buyPrice);
+            GameResourceManager.Instance.SpendResource(GameResType.Coin, buyPrice);
             BuildManager.Instance.UnitUpAction(tileObj);
         }
 

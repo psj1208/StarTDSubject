@@ -21,10 +21,12 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected float attackRadius = 1f;
     [SerializeField] protected LayerMask targetLayer;
     [SerializeField] protected List<Enemy> hits = new List<Enemy>();
+    [SerializeField] protected Animator animator;
     protected abstract void Attack();
 
     protected virtual void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         col =GetComponent<BoxCollider2D>();
         Util.SetCollider2DWorldSize(col, TileAbout.tileSize, attackRadius);
         curTime = 0;

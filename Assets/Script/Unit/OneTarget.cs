@@ -19,6 +19,7 @@ public class OneTarget : Unit
         {
             curTime = 0;
             atkTarget.GetDamage(atk);
+            animator?.Play("Attack");
         }
     }
 

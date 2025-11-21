@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] List<Enemy> curEnemyList = new List<Enemy>();
     [SerializeField] Commander commanderUnit;
     public Commander CommanderUnit {  get { return commanderUnit; } }
+    public event Action winAction;
+    public event Action loseAction;
+    public event Action<int> timeChangeAction;
 
     private List<Vector3> path;
     public List<Vector3> Path { get { return path; } }
@@ -27,12 +31,15 @@ public class GameManager : Singleton<GameManager>
     int curWaveCount = 0;
     int waveEndCount = 0;
 
+    //상수
+    float curTime = 0;
+    public const float waitTimePerWave = 10f;
+
     // Start is called before the first frame update
     protected override void Awake()
     {
         base.Awake();
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        BuildManager.Instance.ControlBuildMode(true);
     }
 
     public void SetPath()
@@ -47,12 +54,36 @@ public class GameManager : Singleton<GameManager>
         });
     }
 
-    public void GameStart(int stage = 0)
+    public void MakeStage(int stage = 0)
     {
         curStage = Static.WaveLists[stage];
         curStageCount = stage;
         curWaveCount = 0;
         waveEndCount = curStage.EnemyList.Count;
+    }
+
+    public void GetWaitingTime()
+    {
+        BuildManager.Instance.ControlBuildMode(true);
+        curTime = waitTimePerWave;
+        StartCoroutine(waitTimeRoutine());
+    }
+
+    IEnumerator waitTimeRoutine()
+    {
+        timeChangeAction?.Invoke((int)curTime);
+        
+        while (curTime > 0)
+        {
+            yield return new WaitForSeconds(1.0f);
+            curTime--;
+
+            timeChangeAction?.Invoke((int)curTime);
+        }
+        curTime = 0;
+        timeChangeAction?.Invoke(0);
+
+        TryWaveStart();
     }
 
     public void TryWaveStart()
@@ -113,15 +144,18 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.Log("게임 승리");
             isGameEnd = true;
+            winAction?.Invoke();
         }
         //패배
         else
         {
             Debug.Log("게임 패배");
             isGameEnd = true;
+            loseAction?.Invoke();
         }
         BuildManager.Instance.ControlBuildMode(false);
     }
+
     IEnumerator SpawnCorutine(GameObject prefab, int count = 1)
     {
         for (int a = 0; a < count; a++)

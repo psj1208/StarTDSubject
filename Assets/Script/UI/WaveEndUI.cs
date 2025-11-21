@@ -27,5 +27,6 @@ public class WaveEndUI : BaseUI
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        GameManager.Instance.GetWaitingTime();
     }
 }

@@ -10,7 +10,7 @@ public class TestScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            GameResourceManager.Instance.AddCoin(50);
+            GameResourceManager.Instance.AddResource(GameResType.Coin, 50);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {

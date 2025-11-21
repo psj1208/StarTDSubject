@@ -28,6 +28,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b5ba09d6a647a5489471e2458be2476
+    m_Address: GameWinUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2cb75b7ca04137e4da426b6ee6aff8c9
+    m_Address: MineralUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2f8d7d45f4697f74d804e8e17bc8556e
     m_Address: DamageText
     m_ReadOnly: 0
@@ -38,8 +48,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44ca1dba36ce3aa4886a460815d4e2f5
+    m_Address: GameLoseUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 547dfbdb09070b242bc5bcb5dd5a60d0
     m_Address: CoinObject
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c0503870b109f245a44edb8d11860cd
+    m_Address: FloatingText
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -74,11 +94,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac7357a6765b117418679511d2b359ef
+    m_Address: InteractUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d7028fe074bf0bd48b44d0fcd2f7b978
     m_Address: Level0_White
     m_ReadOnly: 0
     m_SerializedLabels:
     - Level0
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3c7475b214b896438a34539166c647f
+    m_Address: TimerUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0b11ca08dcdae744a536057b80433a8
     m_Address: WaveStartUI

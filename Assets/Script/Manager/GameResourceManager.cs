@@ -4,28 +4,63 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
+public enum GameResType
+{
+    Coin,
+    Mineral
+}
 public class GameResourceManager : Singleton<GameResourceManager>
 {
     protected override bool dontDestroy => false;
 
     public event Action<float> OnCoinChanged;
+    public event Action<float> OnCoinChangedWithValue;
+    public event Action<float> OnMineralChanged;
+    public event Action<float> OnMineralChangedWithValue;
     [SerializeField] private float coin;
+    [SerializeField] private float mineral;
 
-    public void AddCoin(float num)
+    #region 코인 관련
+    public void AddResource(GameResType type, float num)
     {
-        coin += num;
-        OnCoinChanged?.Invoke(coin);
+        if (type == GameResType.Coin)
+        {
+            coin += num;
+            OnCoinChangedWithValue?.Invoke(num);
+            OnCoinChanged?.Invoke(coin);
+        }
+        else if (type == GameResType.Mineral)
+        {
+            mineral += num;
+            OnMineralChangedWithValue?.Invoke(num);
+            OnMineralChanged?.Invoke(mineral);
+        }
     }
 
-    public bool HaveEnoughCoin(float num)
+    public bool HaveEnoughResource(GameResType type, float num)
     {
-        return coin >= num ? true : false;
+        if (type == GameResType.Coin)
+            return coin >= num ? true : false;
+        else if (type == GameResType.Mineral)
+            return mineral >= num ? true : false;
+        return false;
     }
 
-    public void SpendCoin(float num, Action OnSpend = null)
+    public void SpendResource(GameResType type, float num, Action OnSpend = null)
     {
-        coin = Mathf.Clamp(coin - num, 0, coin);
-        OnCoinChanged?.Invoke(coin);
+        if (type == GameResType.Coin)
+        {
+            coin = Mathf.Clamp(coin - num, 0, coin);
+            OnCoinChangedWithValue?.Invoke(-num);
+            OnCoinChanged?.Invoke(coin);
+        }
+        else if (type == GameResType.Mineral)
+        {
+            mineral = Mathf.Clamp(mineral - num, 0, mineral);
+            OnMineralChangedWithValue?.Invoke(-num);
+            OnMineralChanged?.Invoke(mineral);
+        }
         OnSpend?.Invoke();
     }
+    #endregion
 }

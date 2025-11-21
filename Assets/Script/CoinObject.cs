@@ -6,6 +6,6 @@ public class CoinObject : RectEffectObject
 {
     private void OnDestroy()
     {
-        GameResourceManager.Instance.AddCoin(value);
+        GameResourceManager.Instance.AddResource(GameResType.Coin, value);
     }
 }
