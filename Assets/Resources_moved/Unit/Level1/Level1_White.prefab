@@ -50,6 +50,8 @@ MonoBehaviour:
   level: 1
   type: 0
   atk: 2
+  atkPerReinforce: 0.6
+  ReinforceLevel: 0
   attackTerm: 1
   attackRadius: 2
   targetLayer:

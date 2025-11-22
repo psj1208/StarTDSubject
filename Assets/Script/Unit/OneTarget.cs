@@ -18,7 +18,7 @@ public class OneTarget : Unit
         if (atkTarget != null && curTime >= attackTerm)
         {
             curTime = 0;
-            atkTarget.GetDamage(atk);
+            atkTarget.GetDamage(TotalAtk);
             animator?.Play("Attack");
         }
     }

@@ -15,7 +15,12 @@ public abstract class Unit : MonoBehaviour
     public int Level {  get { return level; } }
     [SerializeField] protected UnitType type = UnitType.White;
     public UnitType Type { get { return type; } }
+    [Space]
+    [Header("About Attack")]
     [SerializeField] protected float atk = 1f;
+    [SerializeField] protected float atkPercentPerReinforce = .3f;
+    [SerializeField] protected float ReinforceLevel;
+    public float TotalAtk { get { return atk * (1 + atkPercentPerReinforce * ReinforceLevel); } }
     protected float curTime;
     [SerializeField] protected float attackTerm = 1f;
     [SerializeField] protected float attackRadius = 1f;
@@ -29,7 +34,18 @@ public abstract class Unit : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         col =GetComponent<BoxCollider2D>();
         Util.SetCollider2DWorldSize(col, TileAbout.tileSize, attackRadius);
+        ReinforceLevel = GameResourceManager.Instance.GetReinForceLevel(level);
         curTime = 0;
+    }
+
+    protected virtual void OnEnable()
+    {
+        GameResourceManager.Instance.ReinforecUpAction += GetReinforceLevel;
+    }
+
+    protected virtual void OnDisable()
+    {
+        GameResourceManager.Instance.ReinforecUpAction -= GetReinforceLevel;
     }
 
     protected virtual void Update()
@@ -57,6 +73,14 @@ public abstract class Unit : MonoBehaviour
             if (hits.Contains(enemy))
                 hits.Remove(enemy);
         }
+    }
+
+    private void GetReinforceLevel(int le,int num)
+    {
+        if (this.level == le)
+            ReinforceLevel = num;
+        else
+            ReinforceLevel = 0;
     }
 
     protected void OnDrawGizmosSelected()

@@ -6,16 +6,19 @@ public class Commander : OneTarget
 {
     [SerializeField] private float hp;
     [SerializeField] private float maxHp = 100;
+    HasHpBar hpBar = new HasHpBar();
 
     protected override void Start()
     {
         base.Start();
         hp = maxHp;
+        hpBar.Init(transform, hp);
     }
 
     public void GetDamage(int dam)
     {
         hp = Mathf.Clamp(hp - dam, 0, maxHp);
+        hpBar.SetHp(hp);
 
         if (IsDeath())
             DeathAction();

@@ -23,6 +23,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Level2
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11f18fbac6104c94485bcb24f70f5c33
+    m_Address: PriceText
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ccb648c1c47e124a887d81e76ef9f72
     m_Address: SoundSource
     m_ReadOnly: 0
@@ -50,6 +55,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 44ca1dba36ce3aa4886a460815d4e2f5
     m_Address: GameLoseUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e96ffd937e2c0c419f7f2d62a09c5bd
+    m_Address: HpUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5174745449c0e1f42b48b800abf00168
+    m_Address: Probe
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

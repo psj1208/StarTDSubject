@@ -19,8 +19,37 @@ public class GameResourceManager : Singleton<GameResourceManager>
     public event Action<float> OnMineralChangedWithValue;
     [SerializeField] private float coin;
     [SerializeField] private float mineral;
+    private Dictionary<string,MonoBehaviour> resourceManageAbout = new Dictionary<string,MonoBehaviour>();
+    private Dictionary<int,int> reinforceValue = new Dictionary<int,int>();
+    public event Action<int,int> ReinforecUpAction;
 
-    #region 코인 관련
+    public void AddDictionary<T>(T input) where T : MonoBehaviour
+    {
+        resourceManageAbout.Add(typeof(T).Name, input);
+    }
+
+    public T Get<T>() where T : MonoBehaviour
+    {
+        string key = typeof(T).Name;
+        return resourceManageAbout[key] as T;
+    }
+
+    public void AddReinforce(int key)
+    {
+        if (!reinforceValue.ContainsKey(key))
+            reinforceValue.Add(key, 0);
+        reinforceValue[key]++;
+        ReinforecUpAction?.Invoke(key, reinforceValue[key]);
+    }
+
+    public int GetReinForceLevel(int level)
+    {
+        if (reinforceValue.ContainsKey(level))
+            return reinforceValue[level];
+        return 0;
+    }
+
+    #region 자원 추가, 소비 관련
     public void AddResource(GameResType type, float num)
     {
         if (type == GameResType.Coin)

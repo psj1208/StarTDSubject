@@ -197,9 +197,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a6ddd9c972b454f8b16f160a8e0da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
+  level: 10
   type: 0
   atk: 1
+  atkPercentPerReinforce: 0.3
+  ReinforceLevel: 0
   attackTerm: 0.5
   attackRadius: 3
   targetLayer:
