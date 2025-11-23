@@ -28,8 +28,29 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 15d889e9ca9fe5b4fba91e7361abc8cc
+    m_Address: Build_Tile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17a0495b508de1843800e40db9c717ac
+    m_Address: ReplaceTileUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ccb648c1c47e124a887d81e76ef9f72
     m_Address: SoundSource
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 217c2a112716076419f1026166d52f8f
+    m_Address: Assets/Resources_moved/Unit/Level3/Level3_White.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Level3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21cec6d99e44a4746972ce3b058d2d2c
+    m_Address: ReplacableTile
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -48,6 +69,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34afa11f1391c8040a6b325c964a9512
+    m_Address: SkillSelectUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3d29fe22e0911724da982436db4673eb
     m_Address: WaveEndUI
     m_ReadOnly: 0
@@ -57,6 +83,12 @@ MonoBehaviour:
     m_Address: GameLoseUI
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 453ef3ebd6b6f344796b51fb404b9935
+    m_Address: AroundDamage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4e96ffd937e2c0c419f7f2d62a09c5bd
     m_Address: HpUI
@@ -88,6 +120,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bdb95c786ee1a8419a7437f8e60ea46
+    m_Address: ExceedUnitUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7f2f20ce7f8cd1e4eb9dea1a07b1a52c
     m_Address: Level1_White
     m_ReadOnly: 0
@@ -96,6 +133,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8316f1bad93c6f549b2330fb267eae79
     m_Address: EnemyExample
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d7c9cca85103774890918e391340ceb
+    m_Address: Prize
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -122,6 +164,17 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e3c7475b214b896438a34539166c647f
     m_Address: TimerUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7b492cb3833c074b8dc19cf1050470b
+    m_Address: CriticalSkill
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea49a85fe49d81b4cb0b5511f23c1931
+    m_Address: SkillPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

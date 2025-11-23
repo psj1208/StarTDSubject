@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEditor.Tilemaps;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using static UnityEngine.Rendering.DebugUI;
 
 public class UnitGroup
@@ -29,7 +30,7 @@ public class BuildManager : Singleton<BuildManager>
     private Dictionary<PointerObject, Unit> unitDictionary = new Dictionary<PointerObject, Unit>();
 
     private Dictionary<int,UnitGroup> groups = new Dictionary<int, UnitGroup>();
-    Dictionary<string, TaskCompletionSource<bool>> loadTasks = new Dictionary<string, TaskCompletionSource<bool>>();
+    private TileBase buildableTile;
     private int unitLevelMax = 3;
     public int UnitLevelMax { get { return unitLevelMax; } }
 
@@ -46,15 +47,41 @@ public class BuildManager : Singleton<BuildManager>
     protected override void Awake()
     {
         base.Awake();
-        for (int a = 0; a < unitLevelMax; a++)
+        for (int a = 0; a <= unitLevelMax; a++)
             loadTasks[$"Level{a}"] = new TaskCompletionSource<bool>();
 
         LoadObject();
     }
 
+    public void SetTestBuff()
+    {
+        List<int> ints = Util.GetRandomIndexes(objects.Count, 2);
+        for (int i = 0; i < objects.Count; i++)
+        {
+            foreach (var val in ints)
+            {
+                if (i == val)
+                {
+                    objects[i].ControlBuff(true, new BuffState(.1f));
+                    break;
+                }
+                else
+                {
+                    objects[i].ControlBuff(false);
+                }
+            }
+        }    
+    }
+    #region ê±´ì„¤ ëª¨ë“œ, ê±´ì„¤ ê´€ë ¨
     public void AddObject(PointerObject obj)
     {
         objects.Add(obj);
+    }
+
+    public void RemoveObject(PointerObject obj)
+    {
+        if(objects.Contains(obj))
+            objects.Remove(obj);
     }
 
     public void ControlBuildMode(bool value = true)
@@ -83,7 +110,7 @@ public class BuildManager : Singleton<BuildManager>
             BuildAction(obj, groups[nextLevel].List[0]);
         }
         else
-            Debug.Log("µ¿ÀÏÇÑ °ÍÀÌ ¾ø½À´Ï´Ù.");
+            Debug.Log("ë™ì¼í•œ ê²ƒì´ ì—†ìŠµë‹ˆë‹¤.");
     }
 
     public bool ReturnSame(PointerObject obj, out PointerObject result)
@@ -115,14 +142,20 @@ public class BuildManager : Singleton<BuildManager>
             unitDictionary.Remove(obj);
         }
     }
+    #endregion
+
+    public void ReplaceTile(Vector3 worldPos)
+    {
+        TileUtility.ReplaceTile(GameManager.Instance.Tilemap, worldPos, buildableTile);
+    }
 
     /// <summary>
-    /// °Ç¼³ ½Ãµµ
+    /// ê±´ì„¤ ì‹œë„
     /// </summary>
     /// <param name="obj"></param>
     public async void TryFirstBuild(PointerObject obj)
     {
-        for (int a = 0; a < unitLevelMax; a++)
+        for (int a = 0; a <= unitLevelMax; a++)
             await loadTasks[$"Level{a}"].Task;
 
         if (obj.Unit != null)
@@ -135,21 +168,33 @@ public class BuildManager : Singleton<BuildManager>
     }
 
     /// <summary>
-    /// ½ÇÁ¦ °Ç¼³
+    /// ì‹¤ì œ ê±´ì„¤
     /// </summary>
     /// <param name="obj"></param>
     private void BuildAction(PointerObject obj, GameObject prefab)
     {
         obj.Unit = Instantiate(prefab, obj.transform.position, Quaternion.identity, towerParent).GetComponent<Unit>();
-        unitDictionary[obj] = obj.Unit;
+    }
+
+    public void ExceedUnit(PointerObject obj)
+    {
+        List<Exceed> skills = SkillManager.Instance.GetRandomSkill(3);
+        UIManager.Instance.show<SkillSelectUI>((prefab) =>
+        {
+            prefab.Init(obj.Unit, skills);
+        });
     }
 
     /// <summary>
-    /// ¿¡¼Â ·Îµå
+    /// ì—ì…‹ ë¡œë“œ
     /// </summary>
     private void LoadObject()
     {
-        for (int a = 0; a < unitLevelMax; a++)
+        AddressManager.Instance.LoadAssetAsync<TileBase>("Build_Tile", (prefab) =>
+        {
+            buildableTile = prefab;
+        });
+        for (int a = 0; a <= unitLevelMax; a++)
         {
             int level = a;
             AddressManager.Instance.LoadAssetsAsync<GameObject>($"Level{level}", (prefabList) =>

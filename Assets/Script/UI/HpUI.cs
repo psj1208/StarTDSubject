@@ -33,6 +33,11 @@ public class HpUI : BaseUI
         CurHp = cur;
     }
 
+    public void DestroyUI()
+    {
+        Destroy(gameObject);
+    }
+
     private void Update()
     {
         rect.anchoredPosition = Util.WorldToCanvasInCameraSpace(parentInWorld.position, mainRect, cam) + new Vector2(0, 50f);

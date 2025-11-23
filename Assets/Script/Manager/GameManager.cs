@@ -12,9 +12,11 @@ public class GameManager : Singleton<GameManager>
     protected override bool dontDestroy => false;
 
     [SerializeField] private Tilemap tilemap;
+    public Tilemap Tilemap {  get { return tilemap; } }
     [SerializeField] List<Enemy> curEnemyList = new List<Enemy>();
     [SerializeField] Commander commanderUnit;
     public Commander CommanderUnit {  get { return commanderUnit; } }
+    public FinalUnit finalUnit;
     public event Action winAction;
     public event Action loseAction;
     public event Action<int> timeChangeAction;
@@ -31,7 +33,7 @@ public class GameManager : Singleton<GameManager>
     int curWaveCount = 0;
     int waveEndCount = 0;
 
-    //»ó¼ö
+    //ìƒìˆ˜
     float curTime = 0;
     public const float waitTimePerWave = 10f;
 
@@ -60,6 +62,7 @@ public class GameManager : Singleton<GameManager>
         curStageCount = stage;
         curWaveCount = 0;
         waveEndCount = curStage.EnemyList.Count;
+        BuildManager.Instance.SetTestBuff();
     }
 
     public void GetWaitingTime()
@@ -93,7 +96,7 @@ public class GameManager : Singleton<GameManager>
 
         if (isWaveOnGoing)
         {
-            Debug.Log("ÀÌ¹Ì Wave°¡ ÁøÇà Áß ÀÔ´Ï´Ù.");
+            Debug.Log("ì´ë¯¸ Waveê°€ ì§„í–‰ ì¤‘ ì…ë‹ˆë‹¤.");
             return;
         }
 
@@ -111,21 +114,21 @@ public class GameManager : Singleton<GameManager>
         });
     }
 
-    //´Ü¼øÈ÷ ¿şÀÌºê Á¾·á¸¦ ¾Ë¸²
+    //ë‹¨ìˆœíˆ ì›¨ì´ë¸Œ ì¢…ë£Œë¥¼ ì•Œë¦¼
     public void WaveEnd()
     {
-        Debug.Log($"[GameManager] Wave{curWaveCount} Á¾·á!");
+        Debug.Log($"[GameManager] Wave{curWaveCount} ì¢…ë£Œ!");
         WaveEndAction();
     }
 
-    //½ÇÁ¦ µ¿ÀÛ(½ºÅ×ÀÌÁö ++ °°Àº)
+    //ì‹¤ì œ ë™ì‘(ìŠ¤í…Œì´ì§€ ++ ê°™ì€)
     private void WaveEndAction()
     {
         isWaveOnGoing = false;
-        //½ºÅ×ÀÌÁöÀÇ ³¡¿¡ µµ´Ş
+        //ìŠ¤í…Œì´ì§€ì˜ ëì— ë„ë‹¬
         if (curWaveCount >= waveEndCount - 1)
         {
-            Debug.Log($"Stage {curStageCount} ÀÇ ÃÑ Wave {curWaveCount} Á¾·á!");
+            Debug.Log($"Stage {curStageCount} ì˜ ì´ Wave {curWaveCount} ì¢…ë£Œ!");
             GameEnd(true);
         }
         else
@@ -139,17 +142,17 @@ public class GameManager : Singleton<GameManager>
     {
         if (isGameEnd)
             return;
-        //½Â¸®
+        //ìŠ¹ë¦¬
         if (value)
         {
-            Debug.Log("°ÔÀÓ ½Â¸®");
+            Debug.Log("ê²Œì„ ìŠ¹ë¦¬");
             isGameEnd = true;
             winAction?.Invoke();
         }
-        //ÆĞ¹è
+        //íŒ¨ë°°
         else
         {
-            Debug.Log("°ÔÀÓ ÆĞ¹è");
+            Debug.Log("ê²Œì„ íŒ¨ë°°");
             isGameEnd = true;
             loseAction?.Invoke();
         }
@@ -176,6 +179,14 @@ public class GameManager : Singleton<GameManager>
     {
         if(curEnemyList.Contains(enemy))
             curEnemyList.Remove(enemy);
+    }
+
+    public void SpawnPrizeMonster(string key = "Prize")
+    {
+        AddressManager.Instance.LoadAssetAsync<GameObject>(key, (prefab) =>
+        {
+            curEnemyList.Add(Instantiate(prefab, startPos, Quaternion.identity).GetComponent<Enemy>());
+        });
     }
 
     private void OnDrawGizmos()

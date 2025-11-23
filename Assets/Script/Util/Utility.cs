@@ -9,11 +9,11 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public static class Util
 {
     /// <summary>
-    /// Å¸ÀÏ 1Ä­ÀÇ »çÀÌÁî¿¡ ¸ÂÃç ÇØ´ç Äİ¶óÀÌ´õÀÇ »çÀÌÁî¸¦ Radius¸¸Å­ Á¶Àı
+    /// íƒ€ì¼ 1ì¹¸ì˜ ì‚¬ì´ì¦ˆì— ë§ì¶° í•´ë‹¹ ì½œë¼ì´ë”ì˜ ì‚¬ì´ì¦ˆë¥¼ Radiusë§Œí¼ ì¡°ì ˆ
     /// </summary>
-    /// <param name="col">Äİ¶óÀÌ´õ</param>
-    /// <param name="tileSize">Å¸ÀÏ 1Ä­ Å©±â</param>
-    /// <param name="radius">¹üÀ§</param>
+    /// <param name="col">ì½œë¼ì´ë”</param>
+    /// <param name="tileSize">íƒ€ì¼ 1ì¹¸ í¬ê¸°</param>
+    /// <param name="radius">ë²”ìœ„</param>
     public static void SetCollider2DWorldSize(BoxCollider2D col, float tileSize, float radius)
     {
         float worldSize = tileSize * (2 * radius + 1);
@@ -25,10 +25,10 @@ public static class Util
     }
 
     /// <summary>
-    /// ¿ùµåÀÇ ÁÂÇ¥¸¦ Äµ¹ö½º(¿À¹ö·¹ÀÌ) »óÀÇ ÁÂÇ¥·Î º¯È¯
+    /// ì›”ë“œì˜ ì¢Œí‘œë¥¼ ìº”ë²„ìŠ¤(ì˜¤ë²„ë ˆì´) ìƒì˜ ì¢Œí‘œë¡œ ë³€í™˜
     /// </summary>
-    /// <param name="world">Å¸°Ù ÁÂÇ¥</param>
-    /// <param name="canvasRect">°è»êÀÇ ÁöÇ¥°¡ µÇ¾îÁÙ Äµ¹ö½º</param>
+    /// <param name="world">íƒ€ê²Ÿ ì¢Œí‘œ</param>
+    /// <param name="canvasRect">ê³„ì‚°ì˜ ì§€í‘œê°€ ë˜ì–´ì¤„ ìº”ë²„ìŠ¤</param>
     /// <returns></returns>
     public static Vector2 WorldToCanvasInOverlay(Vector2 world, RectTransform canvasRect)
     {
@@ -42,7 +42,7 @@ public static class Util
     }
 
     /// <summary>
-    /// ¿ùµåÀÇ ÁÂÇ¥¸¦ Äµ¹ö½º(Ä«¸Ş¶ó) »óÀÇ ÁÂÇ¥·Î º¯È¯
+    /// ì›”ë“œì˜ ì¢Œí‘œë¥¼ ìº”ë²„ìŠ¤(ì¹´ë©”ë¼) ìƒì˜ ì¢Œí‘œë¡œ ë³€í™˜
     /// </summary>
     /// <param name="worldPos"></param>
     /// <param name="canvasRect"></param>
@@ -63,8 +63,37 @@ public static class Util
     public static Vector2 LocalToCanvasPosition(RectTransform target, RectTransform canvas)
     {
         Vector2 anchoredPos = target.anchoredPosition;
-        // ºÎ¸ğ Rect ±âÁØ À§Ä¡¸¦ Canvas·Î º¯È¯
+        // ë¶€ëª¨ Rect ê¸°ì¤€ ìœ„ì¹˜ë¥¼ Canvasë¡œ ë³€í™˜
         return (Vector2)canvas.InverseTransformPoint(target.TransformPoint(anchoredPos));
+    }
+
+    /// <summary>
+    /// nê°œë¥¼ ëœë¤ìœ¼ë¡œ ë°˜í™˜
+    /// </summary>
+    /// <param name="listCount"></param>
+    /// <param name="pickCount"></param>
+    /// <returns></returns>
+    public static List<int> GetRandomIndexes(int listCount, int pickCount)
+    {
+        List<int> indexes = new List<int>();
+
+        if (pickCount > listCount)
+            pickCount = listCount;
+
+        // 0 ~ listCount-1 ë°°ì—´ ì¤€ë¹„
+        List<int> candidates = new List<int>();
+        for (int i = 0; i < listCount; i++)
+            candidates.Add(i);
+
+        // ë¬´ì‘ìœ„ë¡œ êº¼ë‚´ê¸°
+        for (int i = 0; i < pickCount; i++)
+        {
+            int rand = Random.Range(0, candidates.Count);
+            indexes.Add(candidates[rand]);
+            candidates.RemoveAt(rand);
+        }
+
+        return indexes;
     }
 }
 
@@ -85,7 +114,7 @@ public static class TileUtility
 
         if (!groundTilemap.HasTile(startTile) || !groundTilemap.HasTile(endTile))
         {
-            Debug.LogError("StartTile ¶Ç´Â GoalTileÀ» Ã£Áö ¸øÇß½À´Ï´Ù.");
+            Debug.LogError("StartTile ë˜ëŠ” GoalTileì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
             return null;
         }
 
@@ -147,7 +176,7 @@ public static class TileUtility
     }
 
     /// <summary>
-    /// Æ¯Á¤ Å¸ÀÔÀÇ Å¸ÀÏ ¸ğµÎ Ã£±â
+    /// íŠ¹ì • íƒ€ì…ì˜ íƒ€ì¼ ëª¨ë‘ ì°¾ê¸°
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="map"></param>
@@ -169,7 +198,7 @@ public static class TileUtility
     }
 
     /// <summary>
-    /// Æ¯Á¤ Å¸ÀÔÀÇ Å¸ÀÏ ÇÏ³ª¸¸ Ã£±â
+    /// íŠ¹ì • íƒ€ì…ì˜ íƒ€ì¼ í•˜ë‚˜ë§Œ ì°¾ê¸°
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="map"></param>
@@ -191,5 +220,14 @@ public static class TileUtility
     public static Vector3 CellToWorld(Tilemap map, Vector3Int cellPos)
     {
         return map.GetCellCenterWorld(cellPos);
+    }
+
+    public static void ReplaceTile(Tilemap tilemap, Vector3 targetPosInWorld, TileBase replaceTile)
+    {
+        Vector3Int cellPos = tilemap.WorldToCell(targetPosInWorld);
+
+        TileBase current = tilemap.GetTile(cellPos);
+
+        tilemap.SetTile(cellPos, replaceTile);
     }
 }

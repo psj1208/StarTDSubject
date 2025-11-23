@@ -18,7 +18,10 @@ public class OneTarget : Unit
         if (atkTarget != null && curTime >= attackTerm)
         {
             curTime = 0;
-            atkTarget.GetDamage(TotalAtk);
+            float value = TotalAtk;
+            foreach (var s in skills)
+                value = s.ProcessDamage(value);
+            atkTarget.GetDamage(value);
             animator?.Play("Attack");
         }
     }

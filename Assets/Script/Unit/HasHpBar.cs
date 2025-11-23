@@ -26,4 +26,9 @@ public class HasHpBar
     {
         ui.SetHp(cur);
     }
+
+    public void DestroyUI()
+    {
+        ui.DestroyUI();
+    }
 }

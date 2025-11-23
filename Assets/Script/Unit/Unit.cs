@@ -10,6 +10,13 @@ public enum UnitType
 
 public abstract class Unit : MonoBehaviour
 {
+    [Header("버프 관련")]
+    [SerializeField] protected BuffState buff;
+    [Space]
+    [Header("스킬 관련")]
+    [SerializeField] protected List<SkillBase> skills = new List<SkillBase>();
+    public bool HasSkill { get { return skills.Count > 0 ? true : false; } }
+    [Space]
     BoxCollider2D col;
     [SerializeField] protected int level = 0;
     public int Level {  get { return level; } }
@@ -20,7 +27,16 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected float atk = 1f;
     [SerializeField] protected float atkPercentPerReinforce = .3f;
     [SerializeField] protected float ReinforceLevel;
-    public float TotalAtk { get { return atk * (1 + atkPercentPerReinforce * ReinforceLevel); } }
+    public float TotalAtk 
+    { 
+        get 
+        {
+            if (buff != null && buff.isBuff)
+                return atk * (1 + (atkPercentPerReinforce * ReinforceLevel) + buff.atkPercent);
+            else
+                return atk * (1 + (atkPercentPerReinforce * ReinforceLevel));
+        } 
+    }
     protected float curTime;
     [SerializeField] protected float attackTerm = 1f;
     [SerializeField] protected float attackRadius = 1f;
@@ -36,6 +52,11 @@ public abstract class Unit : MonoBehaviour
         Util.SetCollider2DWorldSize(col, TileAbout.tileSize, attackRadius);
         ReinforceLevel = GameResourceManager.Instance.GetReinForceLevel(level);
         curTime = 0;
+    }
+
+    public virtual void SetBuff(BuffState state)
+    {
+        buff = state;
     }
 
     protected virtual void OnEnable()
@@ -83,6 +104,16 @@ public abstract class Unit : MonoBehaviour
             ReinforceLevel = 0;
     }
 
+    public virtual void AddSkill(SkillBase skill)
+    {
+        skills.Add(skill);
+    }
+
+    public virtual void RemoveSkill(SkillBase skill)
+    {
+        if (skills.Contains(skill))
+            skills.Remove(skill);
+    }
     protected void OnDrawGizmosSelected()
     {
         float tileSize = TileAbout.tileSize;

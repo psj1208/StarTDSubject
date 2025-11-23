@@ -6,6 +6,7 @@ public class InGameSceneController : MonoBehaviour
 {
     private void Start()
     {
+        var skills = SkillManager.Instance;
         UIManager.Instance.show<CoinUI>((prefab)=>
         {
             GameResourceManager.Instance.AddResource(GameResType.Coin, 50);

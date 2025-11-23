@@ -12,7 +12,7 @@ public class Commander : OneTarget
     {
         base.Start();
         hp = maxHp;
-        hpBar.Init(transform, hp);
+        hpBar.Init(transform, maxHp);
     }
 
     public void GetDamage(int dam)

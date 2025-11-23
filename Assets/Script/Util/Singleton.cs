@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 //싱글턴 (매니저용)
@@ -10,6 +11,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     protected virtual bool dontDestroy => true;
     private static T _instance;
     public static bool IsAlive;
+    protected Dictionary<string, TaskCompletionSource<bool>> loadTasks = new Dictionary<string, TaskCompletionSource<bool>>();
     public static T Instance
     {
         get
