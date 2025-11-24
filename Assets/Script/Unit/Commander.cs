@@ -28,6 +28,7 @@ public class Commander : OneTarget
     {
         return hp <= 0 ? true : false;
     }
+
     private void DeathAction()
     {
         Debug.Log("Commander Die!");

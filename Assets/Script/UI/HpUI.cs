@@ -29,8 +29,8 @@ public class HpUI : BaseUI
 
     public void SetHp(float cur)
     {
-        hpbar.fillAmount = curHp / maxHp;
         CurHp = cur;
+        hpbar.fillAmount = curHp / maxHp;
     }
 
     public void DestroyUI()

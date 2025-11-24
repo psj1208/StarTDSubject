@@ -8,6 +8,6 @@ public class AroundDamage : Exceed
 {
     public override void Apply(Unit unit)
     {
-        unit.AddComponent<AroundSkill>();
+        unit.AddComponent<AroundSkill>().Init(unit);
     }
 }
